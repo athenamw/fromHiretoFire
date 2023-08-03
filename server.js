@@ -11,17 +11,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // Connect to database
-const db = mysql.createConnection(
-  {
-    host: 'localhost',
-    // MySQL username,
-    user: 'root',
-    // TODO: Add MySQL password here
-    password: 'password',
-    database: 'employeeTracker_db',
-  },
-  console.log(`Connected to the employeeTracker_db database.`)
-);
+
 
 // Create a movie
 app.post('/api/new-movie', ({ body }, res) => {
