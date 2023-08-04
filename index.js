@@ -32,5 +32,21 @@ inquirer
         }
         console.table(data);
       });
+    } else if (answer.viewOptions === 'view all roles') {
+      console.log('user picked view all roles');
+      db.query('SELECT * FROM role', (err, data) => {
+        if (err) {
+          console.log(err);
+        }
+        console.table(data);
+      });
+    } else if (answer.viewOptions === 'view all employees') {
+      console.log('user picked view all employees');
+      db.query('SELECT first_name, last_name      FROM employee', (err, data) => {
+        if (err) {
+          console.log(err);
+        }
+        console.table(data);
+      });
     }
   });
