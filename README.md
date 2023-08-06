@@ -21,6 +21,9 @@ There are no installation instructions.
 ## Usage
 
 This project can be used to help maintain employee information, pay, managers and departments.
+[Video Demo](./assets/Sql%20employee%20tracker.mp4)
+
+[Screenshot](./assets/hiretofirescreenshot.png)
 
 ## License
 
