@@ -8,7 +8,7 @@ VALUES ('Intake'),
        ('Administration');
 
 INSERT INTO role (title, salary, department_id)
-VALUES ('Nurse', 118500, 1),
+VALUES ('Nurse', 130000, 1),
        ('Nurse', 118500, 2),
        ('Social Worker', 88000, 4),
        ('Intake Coordinator', 57000, 1),
