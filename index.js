@@ -42,7 +42,7 @@ inquirer
       });
     } else if (answer.viewOptions === 'view all employees') {
       console.log('user picked view all employees');
-      db.query("select employee.first_name,      employee.last_name, role.title, CONCAT(manager.first_name,' ', manager.last_name) as manager_name from employee left join role on employee.role_id = role.id left join employee manager on manager.id = employee.manager_id;", (err, data) => {
+      db.query("select employee.first_name, employee.last_name, role.title, CONCAT(manager.first_name,' ', manager.last_name) as manager_name from employee left join role on employee.role_id = role.id left join employee manager on manager.id = employee.manager_id;", (err, data) => {
         if (err) {
           console.log(err);
         }
@@ -50,21 +50,64 @@ inquirer
       });
     } else if (answer.viewOptions === 'add a department') {
       console.log('user picked add a department');
-      inquirer.prompt({
-        type: 'input',
-        name: 'newDept',
-        message: 'What is the name of the new department you want to add?'
-      }).then(function(deptAnswer){
-        console.log(deptAnswer);
-        const info = [deptAnswer.newDept];
-      db.query('INSERT INTO department (name) VALUES (?)', info, (err, data) => {
-        if (err) {
-          console.log(err);
-        }
-        db.query('SELECT * FROM department', (err, data) => {
-          console.table(data);
+      inquirer
+        .prompt({
+          type: 'input',
+          name: 'newDept',
+          message: 'What is the name of the new department you want to add?',
+        })
+        .then(function (deptAnswer) {
+          console.log(deptAnswer);
+          const info = [deptAnswer.newDept];
+          db.query('INSERT INTO department (name) VALUES (?)', info, (err, data) => {
+            if (err) {
+              console.log(err);
+            }
+            db.query('SELECT * FROM department', (err, data) => {
+              console.table(data);
+            });
+          });
         });
-      });
-    })
-  }
+    } else if (answer.viewOptions === 'add a role') {
+      console.log('user picked add a role');
+      inquirer
+        .prompt([
+          {
+            type: 'input',
+            name: 'newRole',
+            message: 'What is the name of the new role you want to add?',
+          },
+          {
+            type: 'input',
+            name: 'newSalary',
+            message: 'How much does this new role make per year?',
+          },
+          {
+            type: 'input',
+            name: 'newRoleDept',
+            message: 'What department should this role be added to?',
+          },
+        ])
+        .then(function (roleAnswer) {
+          console.log(roleAnswer);
+          const deptName = [roleAnswer.newRoleDept];
+          db.query('SELECT * FROM department WHERE name = ?', deptName, (err, data) => {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log(data);
+              const roleInfo = [roleAnswer.newRole, roleAnswer.newSalary, data[0].id];
+              db.query('INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)', roleInfo, (err, data) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  db.query('SELECT * FROM role', (err, data) => {
+                    console.table(data);
+                  });
+                }
+              });
+            }
+          });
+        });
+    }
   });
